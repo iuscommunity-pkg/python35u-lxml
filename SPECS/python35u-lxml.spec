@@ -9,8 +9,8 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-lxml
-Version:        3.4.4
-Release:        4%{?dist}
+Version:        3.6.0
+Release:        1.ius%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
 Group:          Development/Libraries
@@ -154,6 +154,9 @@ popd
 %endif
 
 %changelog
+* Fri Apr 08 2016 Carl George <carl.george@rackspace.com> - 3.6.0-1.ius
+- Latest upstream
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 3.4.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
