@@ -1,6 +1,6 @@
-%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
+%global ius_suffix 35u
 
-Name:           python-lxml
+Name:           python%{ius_suffix}-lxml
 Version:        3.6.0
 Release:        1.ius%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
@@ -13,12 +13,12 @@ Source1:        http://lxml.de/files/lxml-%{version}.tgz.asc
 
 BuildRequires:  libxslt-devel
 
-BuildRequires:  python-devel
-BuildRequires:  python-setuptools
-BuildRequires:  python-cssselect
-BuildRequires:  Cython >= 0.20
+BuildRequires:  python%{ius_suffix}-devel
+BuildRequires:  python%{ius_suffix}-setuptools
+BuildRequires:  python%{ius_suffix}-cssselect
+BuildRequires:  python%{ius_suffix}-Cython >= 0.20
 
-Requires:       python-cssselect
+Requires:       python%{ius_suffix}-cssselect
 
 
 %description
@@ -53,29 +53,29 @@ sed -i 's/\r//' doc/s5/ui/default/print.css \
 
 
 %build
-CFLAGS="%{optflags}" %{__python} setup.py build --with-cython
+CFLAGS="%{optflags}" %{__python35u} setup.py build --with-cython
 
 
 %install
-%{__python} setup.py install --skip-build --no-compile --with-cython --root %{buildroot}
+%{__python35u} setup.py install --skip-build --no-compile --with-cython --root %{buildroot}
 
 
 %check
 BUILD_LIB_DIR=$(find $(pwd) -name "*.so" | head -n 1 | xargs dirname)
 cp $BUILD_LIB_DIR/*.so src/lxml
 export LANG=en_US.utf8
-%{__python} test.py -p -v
+%{__python35u} test.py -p -v
 export PYTHONPATH=src
-%{__python} selftest.py
-%{__python} selftest2.py
+%{__python35u} selftest.py
+%{__python35u} selftest2.py
 
 
 %files
 %{!?_licensedir:%global license %%doc}
 %license LICENSES.txt
 %doc PKG-INFO CREDITS.txt CHANGES.txt
-%{python_sitearch}/lxml
-%{python_sitearch}/lxml-*.egg-info
+%{python35u_sitearch}/lxml
+%{python35u_sitearch}/lxml-*.egg-info
 
 %files docs
 %doc doc/*
@@ -85,6 +85,7 @@ export PYTHONPATH=src
 * Fri Apr 08 2016 Carl George <carl.george@rackspace.com> - 3.6.0-1.ius
 - Latest upstream
 - Remove subpackage structure
+- Use python35u names and macros
 
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 3.4.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
