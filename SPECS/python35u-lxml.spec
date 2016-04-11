@@ -1,5 +1,8 @@
 %global ius_suffix 35u
 
+# Can't enable unless we build an IUS package for cssselect
+%bcond_with cssselect
+
 Name:           python%{ius_suffix}-lxml
 Version:        3.6.0
 Release:        1.ius%{?dist}
@@ -15,10 +18,14 @@ BuildRequires:  libxslt-devel
 
 BuildRequires:  python%{ius_suffix}-devel
 BuildRequires:  python%{ius_suffix}-setuptools
+%if %{with cssselect}
 BuildRequires:  python%{ius_suffix}-cssselect
+%endif
 BuildRequires:  python%{ius_suffix}-Cython >= 0.20
 
+%if %{with cssselect}
 Requires:       python%{ius_suffix}-cssselect
+%endif
 
 
 %description
@@ -86,6 +93,7 @@ export PYTHONPATH=src
 - Latest upstream
 - Remove subpackage structure
 - Use python35u names and macros
+- Conditionalize cssselect requirement
 
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 3.4.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
