@@ -2,6 +2,8 @@
 
 # Can't enable unless we build an IUS package for cssselect
 %bcond_with cssselect
+# Can't enable unless we build an IUS package for Cython
+%bcond_with cython
 
 Name:           python%{ius_suffix}-lxml
 Version:        3.6.0
@@ -21,7 +23,9 @@ BuildRequires:  python%{ius_suffix}-setuptools
 %if %{with cssselect}
 BuildRequires:  python%{ius_suffix}-cssselect
 %endif
+%if %{with cython}
 BuildRequires:  python%{ius_suffix}-Cython >= 0.20
+%endif
 
 %if %{with cssselect}
 Requires:       python%{ius_suffix}-cssselect
@@ -47,11 +51,13 @@ This package provides the documentation for %{name}, e.g. the API as html.
 %prep
 %setup -q -n lxml-%{version}
 
+%if %{with cython}
 # remove the C extension so that it will be rebuilt using the latest Cython
 rm -f src/lxml/lxml.etree.c
 rm -f src/lxml/lxml.etree.h
 rm -f src/lxml/lxml.etree_api.h
 rm -f src/lxml/lxml.objectify.c
+%endif
 
 chmod a-x doc/rest2html.py
 sed -i 's/\r//' doc/s5/ui/default/print.css \
@@ -60,11 +66,11 @@ sed -i 's/\r//' doc/s5/ui/default/print.css \
 
 
 %build
-CFLAGS="%{optflags}" %{__python35u} setup.py build --with-cython
+CFLAGS="%{optflags}" %{__python35u} setup.py build %{?_with_cython}
 
 
 %install
-%{__python35u} setup.py install --skip-build --no-compile --with-cython --root %{buildroot}
+%{__python35u} setup.py install --skip-build --no-compile %{?_with_cython} --root %{buildroot}
 
 
 %check
@@ -94,6 +100,7 @@ export PYTHONPATH=src
 - Remove subpackage structure
 - Use python35u names and macros
 - Conditionalize cssselect requirement
+- Conditionalize Cython requirement
 
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 3.4.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
