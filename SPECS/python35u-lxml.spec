@@ -40,10 +40,13 @@ bindings.  In particular, lxml deals with Python Unicode strings
 rather than encoded UTF-8 and handles memory management automatically,
 unlike the default bindings.
 
+
 %package docs
 Summary:        Documentation for %{name}
 Group:          Documentation
 BuildArch:      noarch
+
+
 %description docs
 This package provides the documentation for %{name}, e.g. the API as html.
 
@@ -89,6 +92,7 @@ export PYTHONPATH=src
 %doc PKG-INFO CREDITS.txt CHANGES.txt
 %{python35u_sitearch}/lxml
 %{python35u_sitearch}/lxml-*.egg-info
+
 
 %files docs
 %doc doc/*
