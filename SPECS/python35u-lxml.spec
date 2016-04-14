@@ -82,8 +82,8 @@ cp $BUILD_LIB_DIR/*.so src/lxml
 export LANG=en_US.utf8
 %{__python35u} test.py -p -v
 export PYTHONPATH=src
-%{__python35u} selftest.py
-%{__python35u} selftest2.py
+%{__python35u} src/lxml/tests/selftest.py
+%{__python35u} src/lxml/tests/selftest2.py
 
 
 %files
