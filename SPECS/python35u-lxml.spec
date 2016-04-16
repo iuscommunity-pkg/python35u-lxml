@@ -1,5 +1,11 @@
 %global ius_suffix 35u
 
+%if 0%{?rhel} && 0%{?rhel} < 7
+%bcond_with tests
+%else
+%bcond_without tests
+%endif
+
 # Can't enable unless we build an IUS package for cssselect
 %bcond_with cssselect
 # Can't enable unless we build an IUS package for Cython
@@ -20,8 +26,10 @@ BuildRequires:  libxslt-devel
 
 BuildRequires:  python%{ius_suffix}-devel
 BuildRequires:  python%{ius_suffix}-setuptools
+%if %{with tests}
 %if %{with cssselect}
 BuildRequires:  python%{ius_suffix}-cssselect
+%endif
 %endif
 %if %{with cython}
 BuildRequires:  python%{ius_suffix}-Cython >= 0.20
@@ -76,6 +84,7 @@ CFLAGS="%{optflags}" %{__python35u} setup.py build %{?_with_cython}
 %{__python35u} setup.py install --skip-build --no-compile %{?_with_cython} --root %{buildroot}
 
 
+%if %{with tests}
 %check
 BUILD_LIB_DIR=$(find $(pwd) -name "*.so" | head -n 1 | xargs dirname)
 cp $BUILD_LIB_DIR/*.so src/lxml
@@ -84,6 +93,7 @@ export LANG=en_US.utf8
 export PYTHONPATH=src
 %{__python35u} src/lxml/tests/selftest.py
 %{__python35u} src/lxml/tests/selftest2.py
+%endif
 
 
 %files
@@ -105,6 +115,7 @@ export PYTHONPATH=src
 - Use python35u names and macros
 - Conditionalize cssselect requirement
 - Conditionalize Cython requirement
+- Conditionalize test suite, only run on EL7+
 
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 3.4.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
