@@ -20,7 +20,6 @@ Group:          Development/Libraries
 License:        BSD
 URL:            http://lxml.de
 Source0:        http://lxml.de/files/lxml-%{version}.tgz
-Source1:        http://lxml.de/files/lxml-%{version}.tgz.asc
 
 BuildRequires:  libxslt-devel
 
@@ -116,6 +115,7 @@ export PYTHONPATH=src
 - Conditionalize cssselect requirement
 - Conditionalize Cython requirement
 - Conditionalize test suite, only run on EL7+
+- Remove Source1
 
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 3.4.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
