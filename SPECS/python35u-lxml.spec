@@ -12,7 +12,7 @@
 %bcond_with cython
 
 Name:           python%{ius_suffix}-lxml
-Version:        3.6.0
+Version:        3.6.1
 Release:        1.ius%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -108,6 +108,9 @@ export PYTHONPATH=src
 
 
 %changelog
+* Mon Jul 25 2016 Ben Harper <ben.harper@rackspace.com> - 3.6.1-1.ius
+- Latest upstream
+
 * Fri Apr 08 2016 Carl George <carl.george@rackspace.com> - 3.6.0-1.ius
 - Latest upstream
 - Remove subpackage structure
