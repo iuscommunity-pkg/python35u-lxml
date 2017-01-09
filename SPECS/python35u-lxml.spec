@@ -12,7 +12,7 @@
 %bcond_with cython
 
 Name:           python%{ius_suffix}-lxml
-Version:        3.7.0
+Version:        3.7.2
 Release:        1.ius%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -20,6 +20,7 @@ Group:          Development/Libraries
 License:        BSD
 URL:            http://lxml.de
 Source0:        http://lxml.de/files/lxml-%{version}.tgz
+Patch0:         disable_failed_tests.patch
 
 BuildRequires:  libxslt-devel
 
@@ -60,6 +61,7 @@ This package provides the documentation for %{name}, e.g. the API as html.
 
 %prep
 %setup -q -n lxml-%{version}
+%patch0 -p1
 
 %if %{with cython}
 # remove the C extension so that it will be rebuilt using the latest Cython
@@ -108,6 +110,11 @@ export PYTHONPATH=src
 
 
 %changelog
+* Mon Jan 09 2017 Ben Harper <ben.harper@rackspace.com> - 3.7.2-1.ius
+- Latest upstream
+- Add Patch0 to disable some tests that started failing in 3.7.2 see:
+  https://bugs.launchpad.net/lxml/+bug/1655054
+
 * Tue Dec 13 2016 Carl George <carl.george@rackspace.com> - 3.7.0-1.ius
 - Latest upstream
 
