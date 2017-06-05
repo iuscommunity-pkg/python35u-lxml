@@ -1,4 +1,5 @@
-%global ius_suffix 35u
+%global pypi_name lxml
+%global python python35u
 
 # EL6 has a problematic version of libxml2
 # https://github.com/iuscommunity/wishlist/issues/59#issuecomment-210702512
@@ -8,72 +9,51 @@
 %bcond_without tests
 %endif
 
-# Can't enable unless we build an IUS package for cssselect
+# these correspond to the extras_require options in setup.py
+# https://github.com/lxml/lxml/blob/lxml-3.7.2/setup.py#L68-L70
 %bcond_with cssselect
-# Can't enable unless we build an IUS package for Cython
-%bcond_with cython
+%bcond_with html5
+%bcond_with htmlsoup
 
-Name:           python%{ius_suffix}-lxml
+Name:           %{python}-%{pypi_name}
 Version:        3.8.0
 Release:        1.ius%{?dist}
-Summary:        ElementTree-like Python bindings for libxml2 and libxslt
-
-Group:          Development/Libraries
+Summary:        XML processing library combining libxml2/libxslt with the ElementTree API
 License:        BSD
 URL:            http://lxml.de
-Source0:        http://lxml.de/files/lxml-%{version}.tgz
-BuildRequires:  libxslt-devel
+Source0:        http://lxml.de/files/%{pypi_name}-%{version}.tgz
 
-BuildRequires:  python%{ius_suffix}-devel
-BuildRequires:  python%{ius_suffix}-setuptools
-%if %{with tests}
-%if %{with cssselect}
-BuildRequires:  python%{ius_suffix}-cssselect
-%endif
-%endif
-%if %{with cython}
-BuildRequires:  python%{ius_suffix}-Cython >= 0.20
-%endif
+# http://lxml.de/installation.html#requirements
+BuildRequires:  libxml2-devel >= 2.7.0
+BuildRequires:  libxslt-devel >= 1.1.23
+BuildRequires:  %{python}-devel
+BuildRequires:  %{python}-setuptools
 
-%if %{with cssselect}
-Requires:       python%{ius_suffix}-cssselect
-%endif
+%{?with_cssselect:Requires: %{python}-cssselect}
+%{?with_html5:Requires: %{python}-html5lib}
+%{?with_htmlsoup:Requires: %{python}-beautifulsoup4}
 
 Obsoletes:      %{python}-docs < 3.7.2-2
 
 
 %description
-lxml provides a Python binding to the libxslt and libxml2 libraries.
-It follows the ElementTree API as much as possible in order to provide
-a more Pythonic interface to libxml2 and libxslt than the default
-bindings.  In particular, lxml deals with Python Unicode strings
-rather than encoded UTF-8 and handles memory management automatically,
-unlike the default bindings.
+lxml is a Pythonic, mature binding for the libxml2 and libxslt libraries. It
+provides safe and convenient access to these libraries using the ElementTree It
+extends the ElementTree API significantly to offer support for XPath, RelaxNG,
+XML Schema, XSLT, C14N and much more.To contact the project, go to the project
+home page < or see our bug tracker at case you want to use the current ...
 
 
 %prep
-%setup -q -n lxml-%{version}
-
-%if %{with cython}
-# remove the C extension so that it will be rebuilt using the latest Cython
-rm -f src/lxml/lxml.etree.c
-rm -f src/lxml/lxml.etree.h
-rm -f src/lxml/lxml.etree_api.h
-rm -f src/lxml/lxml.objectify.c
-%endif
-
-chmod a-x doc/rest2html.py
-sed -i 's/\r//' doc/s5/ui/default/print.css \
-    doc/s5/ep2008/atom.rng \
-    doc/s5/ui/default/iepngfix.htc
+%autosetup -n %{pypi_name}-%{version}
 
 
 %build
-CFLAGS="%{optflags}" %{__python35u} setup.py build %{?_with_cython}
+%{py35u_build}
 
 
 %install
-%{__python35u} setup.py install --skip-build --no-compile %{?_with_cython} --root %{buildroot}
+%{py35u_install}
 
 
 %if %{with tests}
@@ -84,11 +64,10 @@ LC_CTYPE=en_US.UTF-8 PYTHON=%{__python35u} make test
 
 
 %files
-%{!?_licensedir:%global license %%doc}
-%license LICENSES.txt
+%license doc/licenses/ZopePublicLicense.txt LICENSES.txt
 %doc README.rst src/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/readme.txt
-%{python35u_sitearch}/lxml
-%{python35u_sitearch}/lxml-*.egg-info
+%{python35u_sitearch}/%{pypi_name}
+%{python35u_sitearch}/%{pypi_name}-%{version}-py?.?.egg-info
 
 
 %changelog
