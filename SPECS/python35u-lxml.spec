@@ -1,5 +1,7 @@
 %global ius_suffix 35u
 
+# EL6 has a problematic version of libxml2
+# https://github.com/iuscommunity/wishlist/issues/59#issuecomment-210702512
 %if 0%{?rhel} && 0%{?rhel} < 7
 %bcond_with tests
 %else
@@ -20,8 +22,6 @@ Group:          Development/Libraries
 License:        BSD
 URL:            http://lxml.de
 Source0:        http://lxml.de/files/lxml-%{version}.tgz
-Patch0:         disable_failed_tests.patch
-
 BuildRequires:  libxslt-devel
 
 BuildRequires:  python%{ius_suffix}-devel
@@ -53,7 +53,6 @@ unlike the default bindings.
 
 %prep
 %setup -q -n lxml-%{version}
-%patch0 -p1
 
 %if %{with cython}
 # remove the C extension so that it will be rebuilt using the latest Cython
@@ -79,13 +78,8 @@ CFLAGS="%{optflags}" %{__python35u} setup.py build %{?_with_cython}
 
 %if %{with tests}
 %check
-BUILD_LIB_DIR=$(find $(pwd) -name "*.so" | head -n 1 | xargs dirname)
-cp $BUILD_LIB_DIR/*.so src/lxml
-export LANG=en_US.utf8
-%{__python35u} test.py -p -v
-export PYTHONPATH=src
-%{__python35u} src/lxml/tests/selftest.py
-%{__python35u} src/lxml/tests/selftest2.py
+cp build/lib.linux-%{_arch}-%{python35u_version}/lxml/*.so src/lxml/
+LC_CTYPE=en_US.UTF-8 PYTHON=%{__python35u} make test
 %endif
 
 
@@ -101,6 +95,7 @@ export PYTHONPATH=src
 * Mon Jun 05 2017 Carl George <carl.george@rackspace.com> - 3.8.0-1.ius
 - Latest upstream
 - Remove docs subpackage
+- Fix test suite and remove patch0
 
 * Mon Jan 09 2017 Ben Harper <ben.harper@rackspace.com> - 3.7.2-1.ius
 - Latest upstream
