@@ -39,6 +39,8 @@ BuildRequires:  python%{ius_suffix}-Cython >= 0.20
 Requires:       python%{ius_suffix}-cssselect
 %endif
 
+Obsoletes:      %{python}-docs < 3.7.2-2
+
 
 %description
 lxml provides a Python binding to the libxslt and libxml2 libraries.
@@ -47,16 +49,6 @@ a more Pythonic interface to libxml2 and libxslt than the default
 bindings.  In particular, lxml deals with Python Unicode strings
 rather than encoded UTF-8 and handles memory management automatically,
 unlike the default bindings.
-
-
-%package docs
-Summary:        Documentation for %{name}
-Group:          Documentation
-BuildArch:      noarch
-
-
-%description docs
-This package provides the documentation for %{name}, e.g. the API as html.
 
 
 %prep
@@ -100,18 +92,15 @@ export PYTHONPATH=src
 %files
 %{!?_licensedir:%global license %%doc}
 %license LICENSES.txt
-%doc PKG-INFO CREDITS.txt CHANGES.txt
+%doc README.rst src/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/readme.txt
 %{python35u_sitearch}/lxml
 %{python35u_sitearch}/lxml-*.egg-info
-
-
-%files docs
-%doc doc/*
 
 
 %changelog
 * Mon Jun 05 2017 Carl George <carl.george@rackspace.com> - 3.8.0-1.ius
 - Latest upstream
+- Remove docs subpackage
 
 * Mon Jan 09 2017 Ben Harper <ben.harper@rackspace.com> - 3.7.2-1.ius
 - Latest upstream
