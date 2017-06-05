@@ -12,7 +12,7 @@
 %bcond_with cython
 
 Name:           python%{ius_suffix}-lxml
-Version:        3.7.2
+Version:        3.8.0
 Release:        1.ius%{?dist}
 Summary:        ElementTree-like Python bindings for libxml2 and libxslt
 
@@ -110,6 +110,9 @@ export PYTHONPATH=src
 
 
 %changelog
+* Mon Jun 05 2017 Carl George <carl.george@rackspace.com> - 3.8.0-1.ius
+- Latest upstream
+
 * Mon Jan 09 2017 Ben Harper <ben.harper@rackspace.com> - 3.7.2-1.ius
 - Latest upstream
 - Add Patch0 to disable some tests that started failing in 3.7.2 see:
