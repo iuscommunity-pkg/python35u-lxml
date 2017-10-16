@@ -16,7 +16,7 @@
 %bcond_with htmlsoup
 
 Name:           %{python}-%{pypi_name}
-Version:        4.0.0
+Version:        4.1.0
 Release:        1.ius%{?dist}
 Summary:        XML processing library combining libxml2/libxslt with the ElementTree API
 License:        BSD
@@ -71,6 +71,9 @@ LC_CTYPE=en_US.UTF-8 PYTHON=%{__python35u} make test
 
 
 %changelog
+* Mon Oct 16 2017 Ben Harper <ben.harper@rackspace.com> - 4.1.0-1.ius
+- Latest upstream
+
 * Mon Sep 18 2017 Ben Harper <ben.harper@rackspace.com> - 4.0.0-1.ius
 - Latest upstream
 
