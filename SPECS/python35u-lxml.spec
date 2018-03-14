@@ -16,7 +16,7 @@
 %bcond_with htmlsoup
 
 Name:           %{python}-%{pypi_name}
-Version:        4.1.0
+Version:        4.2.0
 Release:        1.ius%{?dist}
 Summary:        XML processing library combining libxml2/libxslt with the ElementTree API
 License:        BSD
@@ -49,28 +49,32 @@ home page < or see our bug tracker at case you want to use the current ...
 
 
 %build
-%{py35u_build}
+%{py35_build}
 
 
 %install
-%{py35u_install}
+%{py35_install}
 
 
 %if %{with tests}
 %check
-cp build/lib.linux-%{_arch}-%{python35u_version}/lxml/*.so src/lxml/
-LC_CTYPE=en_US.UTF-8 PYTHON=%{__python35u} make test
+cp build/lib.linux-%{_arch}-%{python35_version}/lxml/*.so src/lxml/
+LC_CTYPE=en_US.UTF-8 PYTHON=%{__python35} make test
 %endif
 
 
 %files
 %license doc/licenses/ZopePublicLicense.txt LICENSES.txt
 %doc README.rst src/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/readme.txt
-%{python35u_sitearch}/%{pypi_name}
-%{python35u_sitearch}/%{pypi_name}-%{version}-py?.?.egg-info
+%{python35_sitearch}/%{pypi_name}
+%{python35_sitearch}/%{pypi_name}-%{version}-py?.?.egg-info
 
 
 %changelog
+* Wed Mar 14 2018 Ben Harper <ben.harper@rackspace.com> - 4.2.0-1.ius
+- Latest upstream
+- update python macro per iuscommunity-pkg/python35u@71a8838
+
 * Mon Oct 16 2017 Ben Harper <ben.harper@rackspace.com> - 4.1.0-1.ius
 - Latest upstream
 
